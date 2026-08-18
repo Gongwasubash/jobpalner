@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+token.json
+credentials.json
+plans/
+.venv/
+venv/
+bot_out.txt
+bot_err.txt
