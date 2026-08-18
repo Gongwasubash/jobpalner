@@ -1,0 +1,14 @@
+[Unit]
+Description=Idea Executer Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/ideaexecuter
+ExecStart=/home/ubuntu/ideaexecuter/venv/bin/python /home/ubuntu/ideaexecuter/bot.py
+Restart=always
+RestartSec=5
+EnvironmentFile=/home/ubuntu/ideaexecuter/.env
+
+[Install]
+WantedBy=multi-user.target
