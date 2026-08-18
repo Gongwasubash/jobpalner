@@ -109,8 +109,12 @@ def handle_update(update: dict):
         send_message(
             chat_id,
             "Send me a YouTube/web link, a voice note, an audio file, or a video "
-            "and I'll transcribe it, classify it, and save an action plan.",
+            "and I'll transcribe it, classify it, and save an action plan. "
+            "Or just chat with me!",
         )
+    elif text.strip():
+        print(f"Received chat message from {chat_id}, replying...")
+        _chat(chat_id, text.strip())
 
 
 def _run(chat_id: str, source: str):
@@ -122,6 +126,20 @@ def _run(chat_id: str, source: str):
         from notify import send_message
 
         send_message(chat_id, f"❌ Error: {exc}")
+
+
+def _chat(chat_id: str, message: str):
+    try:
+        from chat import chat_reply
+        from notify import send_message
+
+        reply = chat_reply(message)
+        send_message(chat_id, reply)
+    except Exception as exc:
+        print(f"Chat error: {exc}")
+        from notify import send_message
+
+        send_message(chat_id, f"❌ Sorry, I couldn't respond: {exc}")
 
 
 def listen():
