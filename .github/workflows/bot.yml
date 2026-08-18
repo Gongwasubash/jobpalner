@@ -33,4 +33,7 @@ jobs:
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           GOOGLE_TOKEN_JSON: ${{ secrets.GOOGLE_TOKEN_JSON }}
+          QWEN_BASE_URL: https://g9hnto0u7lvbu837.us-east-2.aws.endpoints.huggingface.cloud/v1
+          QWEN_API_KEY: none
+          QWEN_MODEL_NAME: Qwen/Qwen3.8-27B
         run: python bot.py

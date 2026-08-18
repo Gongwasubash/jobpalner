@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 
 from googleapiclient.discovery import build
@@ -27,8 +28,11 @@ def _ensure_folder(service, name: str, parent: str = None) -> str:
 def upload_plan_md(md_path: str, branch: str) -> str:
     service = build("drive", "v3", credentials=get_credentials())
 
+    year = datetime.now().strftime("%Y")
+
     root_id = _ensure_folder(service, DRIVE_ROOT)
-    branch_id = _ensure_folder(service, branch, root_id)
+    year_id = _ensure_folder(service, year, root_id)
+    branch_id = _ensure_folder(service, branch, year_id)
 
     fname = Path(md_path).name
     media = MediaFileUpload(md_path, mimetype="text/markdown")

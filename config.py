@@ -21,6 +21,10 @@ GOOGLE_DRIVE_SYNC = os.getenv("GOOGLE_DRIVE_SYNC", "true").strip().lower() in ("
 WHISPER_MODEL = "whisper-large-v3"
 CLASSIFIER_MODEL = "openai/gpt-oss-120b"
 
+QWEN_BASE_URL = os.getenv("QWEN_BASE_URL", "").strip()
+QWEN_API_KEY = os.getenv("QWEN_API_KEY", "").strip()
+QWEN_MODEL_NAME = os.getenv("QWEN_MODEL_NAME", "").strip()
+
 
 def ensure_config():
     missing = []
