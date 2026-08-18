@@ -36,4 +36,5 @@ jobs:
           QWEN_BASE_URL: https://g9hnto0u7lvbu837.us-east-2.aws.endpoints.huggingface.cloud/v1
           QWEN_API_KEY: none
           QWEN_MODEL_NAME: Qwen/Qwen3.8-27B
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: python bot.py

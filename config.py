@@ -25,6 +25,10 @@ QWEN_BASE_URL = os.getenv("QWEN_BASE_URL", "").strip()
 QWEN_API_KEY = os.getenv("QWEN_API_KEY", "").strip()
 QWEN_MODEL_NAME = os.getenv("QWEN_MODEL_NAME", "").strip()
 
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY", "").strip()
+MISTRAL_BASE_URL = os.getenv("MISTRAL_BASE_URL", "https://api.mistral.ai/v1").strip()
+MISTRAL_MODEL = os.getenv("MISTRAL_MODEL", "mistral-large-latest").strip()
+
 
 def ensure_config():
     missing = []
