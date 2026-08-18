@@ -15,6 +15,8 @@ TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 
 HEALTH_PORT = int(os.getenv("PORT", "8080"))
 _last_update_id = 0
+_chat_history = {}
+CHAT_HISTORY_LIMIT = 20
 
 
 def start_health_server():
@@ -110,8 +112,31 @@ def handle_update(update: dict):
             chat_id,
             "Send me a YouTube/web link, a voice note, an audio file, or a video "
             "and I'll transcribe it, classify it, and save an action plan. "
-            "Or just chat with me!",
+            "Or just chat with me!\n\n"
+            "Commands:\n"
+            "/chat — start a conversation\n"
+            "/newchat — clear conversation memory\n"
+            "/help — show this message",
         )
+    elif text.strip() == "/newchat":
+        _chat_history.pop(chat_id, None)
+        from notify import send_message
+
+        send_message(chat_id, "🧹 Conversation memory cleared. Start fresh!")
+    elif text.strip() == "/help":
+        from notify import send_message
+
+        send_message(
+            chat_id,
+            "Send a YouTube/web link, voice note, audio, or video → I transcribe, "
+            "classify, and save a plan to Google Sheets + Drive.\n"
+            "Send any other text → we chat conversationally (I remember context).\n\n"
+            "/newchat — clear my memory\n/help — this message",
+        )
+    elif text.strip() == "/chat":
+        from notify import send_message
+
+        send_message(chat_id, "💬 Chat mode on! Talk to me — I remember our conversation. Send /newchat to reset.")
     elif text.strip():
         print(f"Received chat message from {chat_id}, replying...")
         _chat(chat_id, text.strip())
@@ -133,7 +158,13 @@ def _chat(chat_id: str, message: str):
         from chat import chat_reply
         from notify import send_message
 
-        reply = chat_reply(message)
+        history = _chat_history.get(chat_id, [])
+        reply = chat_reply(message, history=history)
+
+        history.append({"role": "user", "content": message})
+        history.append({"role": "assistant", "content": reply})
+        _chat_history[chat_id] = history[-CHAT_HISTORY_LIMIT * 2 :]
+
         send_message(chat_id, reply)
     except Exception as exc:
         print(f"Chat error: {exc}")
