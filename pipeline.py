@@ -39,9 +39,20 @@ def process(source: str, chat_id: str = None) -> tuple:
         except Exception as exc:
             print(f"Google Sheets sync failed (plan saved locally): {exc}")
 
+        drive_link = None
+        try:
+            from drive import upload_plan_md
+            from config import GOOGLE_DRIVE_SYNC
+
+            if GOOGLE_DRIVE_SYNC:
+                drive_link = upload_plan_md(saved_path, result.get("branch", "uncategorized"))
+                print(f"Uploaded to Google Drive: {drive_link}")
+        except Exception as exc:
+            print(f"Google Drive upload failed (plan saved locally): {exc}")
+
         if chat_id:
             from notify import send_plan_notification
 
-            send_plan_notification(chat_id, result, saved_path, sheet_url=sheet_url)
+            send_plan_notification(chat_id, result, saved_path, sheet_url=sheet_url, drive_link=drive_link)
 
         return result, saved_path

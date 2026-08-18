@@ -15,7 +15,10 @@ from config import (
     SPREADSHEET_ID,
 )
 
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+]
 
 
 def _materialize_env_files():
@@ -25,7 +28,7 @@ def _materialize_env_files():
         GOOGLE_TOKEN_FILE.write_text(GOOGLE_TOKEN_JSON, encoding="utf-8")
 
 
-def get_service():
+def get_credentials():
     _materialize_env_files()
     creds = None
     if GOOGLE_TOKEN_FILE.exists():
@@ -37,7 +40,11 @@ def get_service():
             flow = InstalledAppFlow.from_client_secrets_file(str(GOOGLE_CREDENTIALS_FILE), SCOPES)
             creds = flow.run_local_server(port=0)
         GOOGLE_TOKEN_FILE.write_text(creds.to_json(), encoding="utf-8")
-    return build("sheets", "v4", credentials=creds)
+    return creds
+
+
+def get_service():
+    return build("sheets", "v4", credentials=get_credentials())
 
 
 def _existing_sheet_titles(service, spreadsheet_id: str) -> set:

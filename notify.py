@@ -11,7 +11,7 @@ def send_message(chat_id: str, text: str):
     ).raise_for_status()
 
 
-def send_plan_notification(chat_id: str, result: dict, saved_path: str, sheet_url: str = None):
+def send_plan_notification(chat_id: str, result: dict, saved_path: str, sheet_url: str = None, drive_link: str = None):
     msg = (
         "✅ *Plan saved!*\n\n"
         f"📁 Branch: `{result.get('branch')}`\n"
@@ -22,4 +22,6 @@ def send_plan_notification(chat_id: str, result: dict, saved_path: str, sheet_ur
     )
     if sheet_url:
         msg += f"\n📊 [View in Google Sheets]({sheet_url})"
+    if drive_link:
+        msg += f"\n💾 [View .md in Google Drive]({drive_link})"
     send_message(chat_id, msg)

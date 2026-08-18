@@ -16,6 +16,7 @@ GOOGLE_CREDENTIALS_FILE = Path(os.getenv("GOOGLE_CREDENTIALS_FILE", str(BASE_DIR
 GOOGLE_TOKEN_FILE = Path(os.getenv("GOOGLE_TOKEN_FILE", str(BASE_DIR / "token.json")))
 GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON", "").strip()
 GOOGLE_TOKEN_JSON = os.getenv("GOOGLE_TOKEN_JSON", "").strip()
+GOOGLE_DRIVE_SYNC = os.getenv("GOOGLE_DRIVE_SYNC", "true").strip().lower() in ("1", "true", "yes")
 
 WHISPER_MODEL = "whisper-large-v3"
 CLASSIFIER_MODEL = "openai/gpt-oss-120b"
